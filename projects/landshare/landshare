@@ -1,0 +1,33 @@
+const LANDSHARE_TOKEN_CONTRACT = '0xA73164DB271931CF952cBaEfF9E8F5817b42fA5C';
+const LANDSHARE_STAKING_CONTRACT = '0x3f9458892fB114328Bc675E11e71ff10C847F93b';
+const LANDSHARE_LP_TOKEN_CONTRACT = '0x13f80c53b837622e899e1ac0021ed3d1775caefa';
+
+async function tvl(api) {
+  const tokenBalance = await api.call({
+    abi: 'erc20:balanceOf',
+    target: LANDSHARE_TOKEN_CONTRACT,
+    params: [LANDSHARE_STAKING_CONTRACT],
+  });
+
+  api.add(LANDSHARE_TOKEN_CONTRACT, tokenBalance);
+}
+
+async function staking(api) {
+  const stakingBalance = await api.call({
+    abi: 'erc20:balanceOf',
+    target: LANDSHARE_TOKEN_CONTRACT,
+    params: [LANDSHARE_STAKING_CONTRACT],
+  });
+
+  api.add(LANDSHARE_TOKEN_CONTRACT, stakingBalance);
+}
+
+module.exports = {
+  methodology: 'TVL is calculated by summing the balance of LANDSHARE tokens in the staking contract.',
+  start: 26406467,
+  bsc: {
+    tvl,
+    staking,
+  },
+};
+
